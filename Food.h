@@ -61,7 +61,7 @@ Food<foodGroup>::Food(std::string name, int servingSize, double calories, double
 template <class foodGroup>
 void Food<foodGroup>::setName(std::string name)
 {
-    this->name = n;
+    this->name = name;
 }
 
 // Set the recommended serving size of the given food object to the integer parameter 'servingSize'.
