@@ -8,40 +8,36 @@
 
 
 #include "Food.h"
+#include "listNode.h"
 
 //inheriting template from parent class to ensure usability
-template<class foodGroup>
 class foodList{
     private:
     //Creating a linked List
-    struct list{
-        Food<foodGroup> obj; 
-        Food<foodGroup>* pnt;
-    };
-    list head;
-    list* tail;
+    listNode<Food> head;
+    listNode<Food>* tail;
 
     //function Prototypes
-    void push_back(Food<foodGroup>);
-    void insert(Food<foodGroup>, int);
+    void push_back(Food);
+    void insert(Food, int);
     void deletion(int);
-    list* accessItem(int);
+    listNode<Food>* accessItem(int);
 
     public:
     //constructor
-    foodList<foodGroup>();
+    foodList();
 
     //Destructor
-    ~foodList<foodGroup>();
+    ~foodList();
 
     //Accessor functions
-    Food<foodGroup> getFood(int);
+    Food getFood(int);
 
     //Mutator functions
-    void setFood(int, Food<foodGroup>);
+    void setFood(int, Food);
     void newFood();
-    void newFood(Food<foodGroup>);
-    void newFood(Food<foodGroup>, int);
+    void newFood(Food);
+    void newFood(Food, int);
     void RemoveItem(int);
 
 };
@@ -52,43 +48,38 @@ class foodList{
 //Mostly for internal use, if needed, they can become external
 
 //creates new object
-template <class foodGroup>
-void foodList<foodGroup>::push_back(Food<foodGroup> item){
-    Food<foodGroup>* temp;
-    temp = new list;
-    tail->pnt = temp;
-    temp->obj = item;
-    temp->pnt = NULL;
-    tail = temp; 
+void foodList::push_back(Food item){
+    listNode<Food>* temp = tail;
+    tail->setPnt(new listNode<Food>);
+    tail->getPnt()->setObj(item);
+    tail->getPnt()->setPnt(NULL);
+    tail = temp;
 }
 
 //will create a new food object at the provided index
-template <class foodGroup>
-void foodList<foodGroup>::insert(Food<foodGroup> item, int index){
-    Food<foodGroup>* temp = accessItem(index)->pnt;
-    accessItem(index)->pnt = new list;
-    accessItem(index + 1)->pnt= temp;
+void foodList::insert(Food item, int index){
+    listNode<Food>* temp = accessItem(index)->getPnt();
+    accessItem(index)->setPnt(new listNode<Food>);
+    accessItem(index + 1)->setPnt(temp);
 }
 
 
 //will delete the food object at the provided index
-template <class foodGroup>
-void foodList<foodGroup>::deletion(int index){
-    Food<foodGroup>* temp = accessItem(index)->pnt;
-    delete *accessItem(index);
-    accessItem(index - 1).pnt = temp;
+void foodList::deletion(int index){
+    listNode<Food>* temp = accessItem(index)->getPnt();
+    delete accessItem(index);
+    accessItem(index - 1)->setPnt(temp);
 }
 
 
 //returns a pointer to the list obj at a given position
-template <class foodGroup>
-typename foodList<foodGroup>::list* foodList<foodGroup>::accessItem(int index){
+listNode<Food> *foodList::accessItem(int index){
     //Temporary Variables
-    Food<foodGroup>* temp = &head;
+    listNode<Food>* temp = &head;
     int i = 0;
     //accessing item by iterating through the list until the index is reached
     while(i < index || temp != NULL){
-        temp = temp.pnt;
+        temp = temp->getPnt();
         i++;
     }
     return(temp);
@@ -102,66 +93,59 @@ typename foodList<foodGroup>::list* foodList<foodGroup>::accessItem(int index){
 //The humble accessor function
 
 //returns food object at index
-template<class foodGroup>
-Food<foodGroup> foodList<foodGroup>::getFood(int index){
-    return(accessItem(index)->obj);
+Food foodList::getFood(int index){
+    return(accessItem(index)->getObj());
 }
 
 //Mutator functions
 
 //sets food object at an existing index
-template <class foodGroup>
-void foodList<foodGroup>::setFood(int index, Food<foodGroup> newObj){
-    accessItem(index)->obj = newObj;
+void foodList::setFood(int index, Food newObj){
+    accessItem(index)->setObj(newObj);
 }
 
 //Creates an empty food object
-template <class foodGroup>
-void foodList<foodGroup>::newFood(){
+void foodList::newFood(){
     //using default constructors for foodgroup
-    Food<foodGroup> a;
+    Food a;
     //adding empty obj to list
     push_back(a);
 }
 
 //Adds a new food object to the end of the list
-template <class foodGroup>
-void foodList<foodGroup>::newFood(Food<foodGroup> obj){
+void foodList::newFood(Food obj){
     push_back(obj);
 }
 
 //Inserts a new food object at the index
-template <class foodGroup>
-void foodList<foodGroup>::newFood(Food<foodGroup> obj, int index){
+void foodList::newFood(Food obj, int index){
     insert(obj, index);
 }
 
 //Deletes the object at the index
-template <class foodGroup>
-void foodList<foodGroup>::RemoveItem(int index){
+void foodList::RemoveItem(int index){
     deletion(index);
 }
 
 //Constructor and Destructor Definintion :(
 
 //Constructor
-template <class foodGroup>
-foodList<foodGroup>::foodList(){
+foodList::foodList(){
     //by default, tail will point to NULL and head will point to the tail.
-    head.pnt = tail;
-    tail.pnt = NULL;
+    head.setPnt(tail);
+    tail->setPnt(NULL);
 }
 
 //Destructor
-template <class foodGroup>
-foodList<foodGroup>::~foodList(){
+foodList::~foodList(){
     //similar to accessitem but we're destroying EVERYTHING
     //Temporary Variables
-    Food<foodGroup>* temp = &head;
+    listNode<Food>* temp = &head;
     int i = 0;
+    //iteratively deleting list
     while(temp != NULL){
-        temp = temp.pnt;
-        delete *accessItem(i);
+        temp = temp->getPnt();
+        delete accessItem(i);
         i++;
     }
 }

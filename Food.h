@@ -8,7 +8,7 @@
 
 #include <string>
 
-template <typename foodGroup>
+
 class Food
 {
 private:
@@ -36,8 +36,7 @@ public:
 };
 
 // Constructor Definitions
-template <class foodGroup>
-Food<foodGroup>::Food()
+Food::Food()
 {
     this->name = "bread";
     this->servingSize = 5;
@@ -46,8 +45,7 @@ Food<foodGroup>::Food()
 }
 
 // Overloaded Constructor Definition
-template <class foodGroup>
-Food<foodGroup>::Food(std::string name, int servingSize, double calories, double price)
+Food::Food(std::string name, int servingSize, double calories, double price)
 {
     this->name = name;
     this->servingSize = servingSize;
@@ -58,32 +56,28 @@ Food<foodGroup>::Food(std::string name, int servingSize, double calories, double
 // Mutators
 
 // Set the name of the given food object to string value passed in through 'name' 
-template <class foodGroup>
-void Food<foodGroup>::setName(std::string name)
+void Food::setName(std::string name)
 {
     this->name = name;
 }
 
 // Set the recommended serving size of the given food object to the integer parameter 'servingSize'.
 // For the sake of this program, the serving size will be some arbituary integer between 1 and 2000.  
-template <class foodGroup>
-void Food<foodGroup>::setSize(int servingSize)
+void Food::setSize(int servingSize)
 {
     this->servingSize = servingSize;
 }
 
 // Set the number of calories in the recommended serving size of the given food object to the double value passed in via 'calories'.
 // For the sake of this program, the calories per seving value will be an arbituary value between 1 and 500.
-template <class foodGroup>
-void Food<foodGroup>::setCalories(double calories)
+void Food::setCalories(double calories)
 {
     this->calories = calories; 
 }
 
 // Set the price of the given food object to the double value passed in through the 'price' parameter.
 // For the sake of the program, the price will be some arbituary value between 0.01 and 15.99
-template <class foodGroup>
-void Food<foodGroup>::setPrice(double price)
+void Food::setPrice(double price)
 {
     this->price = price;
 }
@@ -91,29 +85,25 @@ void Food<foodGroup>::setPrice(double price)
 // Accessor Functions
 
 // Return the name of the given food object
-template <class foodGroup>
-std::string Food<foodGroup>::getName()
+std::string Food::getName()
 {
     return this->name;
 }
 
 // Return the recommended serving size of a given food object
-template <class foodGroup>
-int Food<foodGroup>::getSize()
+int Food::getSize()
 {
     return this->servingSize;
 }
 
 // Return the calories per serving value for a given food object
-template <class foodGroup>
-double Food<foodGroup>::getCalories()
+double Food::getCalories()
 {
     return this->calories;
 }
 
 // Return the price of a given food object
-template <class foodGroup>
-double Food<foodGroup>::getPrice()
+double Food::getPrice()
 {
     return this->price;
 }
