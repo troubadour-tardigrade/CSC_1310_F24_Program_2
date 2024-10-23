@@ -26,17 +26,6 @@ bool importFile(std::string fileName, foodList* importME){
         return(false);
     }
 
-    /*
-     *
-     *
-     * I'm making this big to make it harder to ignore later    
-     * Come back and redo after file structure is more defined
-     * (if needed ofc) 
-     *
-     * 
-     * 
-    */
-
 
     do{
         //reading data
@@ -56,5 +45,36 @@ bool importFile(std::string fileName, foodList* importME){
         importME->newFood(Temp);
     }while(inputFile.good());
 
+    //closing and ending function
+    inputFile.close();
     return(true);    
+}
+
+
+//function definition for exportFile, will export a foodList to a text file, will return true upon a successful export
+bool exportFile(std::string fileName, foodList* exportME){
+    //Same Delimiter as importFile, if it's not someone messed up :(
+    const char delimiter = '#';
+
+    std::ofstream outputFile;
+    outputFile.open(fileName);
+
+    if(!outputFile.is_open() || exportME->peek(0) != NULL){
+        return(false);
+    }
+
+    //index i is the current position in the list
+    int i = 0;
+    while(exportME->peek(i) != NULL){
+        //Outputting to file
+        outputFile << exportME->getFood(0).getName() << delimiter;
+        outputFile << exportME->getFood(0).getSize() << delimiter;
+        outputFile << exportME->getFood(0).getPrice() << delimiter;
+        outputFile << exportME->getFood(0).getCalories() << delimiter;
+    }
+
+    //closing file and returning
+    outputFile.close();
+    return(true);
+    
 }

@@ -32,6 +32,7 @@ class foodList{
 
     //Accessor functions
     Food getFood(int);
+    listNode<Food>* peek(int);
 
     //Mutator functions
     void setFood(int, Food);
@@ -90,11 +91,16 @@ listNode<Food> *foodList::accessItem(int index){
 
 //PUBLIC FUNCTION DEFINITIONS :|
 
-//The humble accessor function
+//The humble accessor functions
 
 //returns food object at index
 Food foodList::getFood(int index){
     return(accessItem(index)->getObj());
+}
+
+//returns the pointer to the next object in the list (NULL if at the end)
+listNode<Food>* foodList::peek(int index){
+    return(accessItem(index)->getPnt());
 }
 
 //Mutator functions

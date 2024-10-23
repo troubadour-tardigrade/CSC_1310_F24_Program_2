@@ -9,7 +9,7 @@
 #include "foodList.H"
 #include <iostream>
 
-//functions for main file
+//function Prototypes for Main
 
 //Imports Food Objects from a text file into a foodList
 bool importFile(std::string, foodList*);
