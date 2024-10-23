@@ -8,10 +8,11 @@
 #include <iostream>
 #include <fstream>
 
+//global variable to ensure import and export functions are using the same char, should it be changed later on
+const char delimiter = '#';
+
 //imports a text file to a foodList data type, will return true on a sucessful read and false on a failed read
 bool importFile(std::string fileName, foodList* importME){
-    //for now the delimiter will be #
-    const char delimiter = '#';
 
     //temp Variables
     std::string input;
@@ -53,12 +54,12 @@ bool importFile(std::string fileName, foodList* importME){
 
 //function definition for exportFile, will export a foodList to a text file, will return true upon a successful export
 bool exportFile(std::string fileName, foodList* exportME){
-    //Same Delimiter as importFile, if it's not someone messed up :(
-    const char delimiter = '#';
 
+    //opening file
     std::ofstream outputFile;
     outputFile.open(fileName);
 
+    //checking that the file opened and the list isn't empty
     if(!outputFile.is_open() || exportME->peek(0) != NULL){
         return(false);
     }
@@ -67,10 +68,11 @@ bool exportFile(std::string fileName, foodList* exportME){
     int i = 0;
     while(exportME->peek(i) != NULL){
         //Outputting to file
-        outputFile << exportME->getFood(0).getName() << delimiter;
-        outputFile << exportME->getFood(0).getSize() << delimiter;
-        outputFile << exportME->getFood(0).getPrice() << delimiter;
-        outputFile << exportME->getFood(0).getCalories() << delimiter;
+        outputFile << exportME->getFood(i).getName() << delimiter;
+        outputFile << exportME->getFood(i).getSize() << delimiter;
+        outputFile << exportME->getFood(i).getPrice() << delimiter;
+        outputFile << exportME->getFood(i).getCalories() << delimiter;
+        i++;
     }
 
     //closing file and returning
