@@ -80,3 +80,14 @@ bool exportFile(std::string fileName, foodList* exportME){
     return(true);
     
 }
+
+//Prints Main Menu based on the provided index where the default is the main menu
+void printMenu(int i = 0){
+    switch(i){
+        case (0):
+            std::cout << "\nWhat Would you Like to do?\n";
+            std::cout << "1.) \n";
+            std::cout << "2.) \n";
+            std::cout << "3.) \n";
+    }
+}

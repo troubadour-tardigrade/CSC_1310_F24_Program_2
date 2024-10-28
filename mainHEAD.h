@@ -7,7 +7,6 @@
 #define MAINHEAD_H
 
 #include "foodList.H"
-#include <iostream>
 
 //function Prototypes for Main
 
@@ -16,5 +15,8 @@ bool importFile(std::string, foodList*);
 
 //Exports Food Objects to a text file
 bool exportFile(std::string, foodList*);
+
+//Prints Menu based on provided index, default is Main menu
+void printMenu(int);
 
 #endif

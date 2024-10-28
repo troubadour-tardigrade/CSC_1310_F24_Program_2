@@ -6,6 +6,7 @@
 
 #ifndef LISTNODE_H
 #define LISTNODE_H
+#include <iostream>
 
 template <typename T>
 class listNode{
@@ -58,7 +59,7 @@ class listNode{
         }
 
         //sets pointer to next node
-        void setPnt(listNode* pnt){
+        void setPnt(listNode<T>* pnt){
             this->pnt = pnt;
         }
 };

@@ -9,8 +9,8 @@
 
 #include "Food.h"
 #include "listNode.h"
+#include <iostream>
 
-//inheriting template from parent class to ensure usability
 class foodList{
     private:
     //Creating a linked List
@@ -22,6 +22,8 @@ class foodList{
     void insert(Food, int);
     void deletion(int);
     listNode<Food>* accessItem(int);
+    void mergeSort(foodList*, int, int, bool);
+    void merge(foodList*, int, int, int, bool);
 
     public:
     //constructor
@@ -34,12 +36,29 @@ class foodList{
     Food getFood(int);
     listNode<Food>* peek(int);
 
+    //Output operator
+    friend std::ostream& operator<<(std::ostream& os, foodList& list){
+        listNode<Food>* index = &list.head;
+        int i = 0;
+        while(index != NULL){
+            os << "\n\nFood Type:\t" << index->getObj().getName();
+            os << "\nFood Size:\t" << index->getObj().getSize();
+            os << "\nFood Price:\t" << index->getObj().getPrice();
+            os << "\nFood Calories:\t" << index->getObj().getCalories();
+            index = index->getPnt();
+            i++;
+        }
+        return os;
+    }
+
     //Mutator functions
     void setFood(int, Food);
     void newFood();
     void newFood(Food);
     void newFood(Food, int);
     void RemoveItem(int);
+    void sortAsc();
+    void sortDec();
 
 };
 
@@ -50,11 +69,11 @@ class foodList{
 
 //creates new object
 void foodList::push_back(Food item){
-    listNode<Food>* temp = tail;
+
     tail->setPnt(new listNode<Food>);
     tail->getPnt()->setObj(item);
     tail->getPnt()->setPnt(NULL);
-    tail = temp;
+    tail = tail->getPnt();
 }
 
 //will create a new food object at the provided index
@@ -79,13 +98,68 @@ listNode<Food> *foodList::accessItem(int index){
     listNode<Food>* temp = &head;
     int i = 0;
     //accessing item by iterating through the list until the index is reached
-    while(i < index || temp != NULL){
+    while(i < index || temp->getPnt() != NULL){
         temp = temp->getPnt();
         i++;
     }
+
     return(temp);
 }
 
+//To make recursion easier within context, definfining a seperate mergesort function
+void foodList::mergeSort(foodList* list, int lower, int upper, bool asc = 0){
+    int midpnt = 0;
+    static int r = 0;
+    r++;
+    if(lower < upper){
+        midpnt = (upper + lower) / 2;
+        //splitting to lowest elements
+        mergeSort(list, lower, midpnt, asc);
+        mergeSort(list, midpnt + 1, upper, asc);
+        //merging based on calorie size of each element
+        //using a bool to define ascending or descending order, where 0/false is ascending and 1/true is descending
+        
+        merge(list, lower, midpnt, upper, asc);
+    }
+}
+
+void foodList::merge(foodList* list, int lower, int mid, int upper, bool asc){
+    int mergeSize = upper - lower + 1;
+    int lowPos(lower), mergePos(0), upPos(mid + 1);
+
+    foodList* mergedList = new foodList;
+    for(int i = 0; i < mergeSize - 1; i++){
+        mergedList->newFood();
+    }
+
+    while(lowPos <= mid && upPos <= upper){
+        if(list->getFood(lowPos).getCalories() < list->getFood(upPos).getCalories()){
+            mergedList->setFood(mergePos, list->getFood(lowPos));
+            lowPos++;
+        }else{
+            mergedList->setFood(mergePos, list->getFood(upPos));
+            upPos++;
+        }
+        mergePos++;
+    }
+
+    while(lowPos <= mid){
+        mergedList->setFood(mergePos, list->getFood(lowPos));
+        lowPos++;
+        mergePos++;
+    }
+
+    while(upPos <= upper){
+        mergedList->setFood(mergePos, list->getFood(upPos));
+        upPos++;
+        mergePos++;
+    }
+    std::cout << *mergedList;
+    for(int j = 0; j < mergeSize; j++){
+        list->accessItem(j)->setObj(mergedList->getFood(j));
+    }
+
+}
 
 
 
@@ -133,13 +207,44 @@ void foodList::RemoveItem(int index){
     deletion(index);
 }
 
+//Sorts the array in ascending order based on Calorie values
+void foodList::sortAsc(){
+    //using a mergesort algorithm
+
+    listNode<Food>* index = &head;
+    int size;
+
+    //start by finding the size of the list
+    for(int i = 0; index->getPnt() != NULL; i++){
+        size = i;
+        index = index->getPnt();
+    }
+    mergeSort(this, 0, size, 0);
+}
+
+
+//Sorts the array in descending order based on Calorie values
+void foodList::sortDec(){
+    //using a mergesort algorithm
+
+    listNode<Food>* index = &head;
+    int size;
+
+    //start by finding the size of the list
+    for(int i = 0; index->getPnt() != NULL; i++){
+        size = i;
+        index = index->getPnt();
+    }
+    mergeSort(this, 0, size, 1);
+}
+
 //Constructor and Destructor Definintion :(
 
 //Constructor
 foodList::foodList(){
-    //by default, tail will point to NULL and head will point to the tail.
-    head.setPnt(tail);
-    tail->setPnt(NULL);
+    //by default, head points to NULL and Tail points to head
+    head.setPnt(NULL);
+    tail = &head;
 }
 
 //Destructor
@@ -155,6 +260,7 @@ foodList::~foodList(){
         i++;
     }
 }
+
 
 
 #endif
