@@ -1,5 +1,5 @@
 p: main.cpp
 	g++ main.cpp -o p
 
-main.cpp: mainfunc.cpp
-	g++ -c mainfunc.cpp -o main.cpp
+main: mainfunc.cpp
+	g++ -c mainfunc.cpp main.cpp -o main.exe
