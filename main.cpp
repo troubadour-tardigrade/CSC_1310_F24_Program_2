@@ -1,29 +1,41 @@
 /*
-    Collaborators: Jonathan Salvato
+    Collaborators: Jonathan Salvato, Nick Romsdal
     Program 2
     Date: 10/23/24
 */
+
 #include "mainHEAD.h"
+#include <fstream>
+#include <string>
 
 int main(){
-    Food a("Test 4", 4, 4, 4);
-    Food b("Test 2", 2, 2, 2);
-    Food c("Test 3", 3, 3, 3);
-    Food d("Test 1", 1, 1, 1);
+    foodList fruit;
+    foodList vegetable;
+    foodList grain;
+    foodList protein;
 
-    foodList A;
+    bool status;
 
-    A.setFood(0, a);
-    A.newFood(b);
-    A.newFood(c);
-    A.newFood(d);
-    std::cout << A;
 
-    A.sortAsc();
-    std:: cout << A;
 
-    //A.sortDec();
-    //std::cout << A;
+    std::cout << "Startup" << std::endl;
+
+    status = importFile("data_files/fruit.txt", &fruit);
+    std::cout << "Fruit List Imported:\t" << status << std::endl;
+
+    // status = importFile("data_files/vegetable.txt", &vegetable);
+    // std::cout << "Vegetable List Imported:\t" << status << std::endl;
+
+    // status = importFile("data_files/fruit.txt", &fruit);
+    // std::cout << "Fruit List Imported:\t" << status << std::endl;
+
+    // status = importFile("data_files/fruit.txt", &fruit);
+    // std::cout << "Fruit List Imported:\t" << status << std::endl;
+
+    
+
+    fruit.sortAsc();
+    std:: cout << fruit;
 
 
     std::cout << "\nEND";
