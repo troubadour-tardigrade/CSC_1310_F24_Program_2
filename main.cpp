@@ -8,7 +8,7 @@
 #include <string>
 #include <fstream>
 
-const char delimiter = '#';
+const char delimiter = ',';
 
 
 int main(){
@@ -17,29 +17,32 @@ int main(){
     foodList grain;
     foodList protein;
 
+    foodList foodGroups[4] = {fruit, vegetable, grain, protein}; 
+
     bool status;
 
+    importFile("data_files/fruit.txt", &fruit);
 
+    // importFile("data_files/vegetable.txt", &vegetable);
 
-    std::cout << "Startup" << std::endl;
-
-    status = importFile("data_files/fruit.txt", &fruit);
-    std::cout << "Fruit List Imported:\t" << status << std::endl;
-
-    // status = importFile("data_files/vegetable.txt", &vegetable);
-    // std::cout << "Vegetable List Imported:\t" << status << std::endl;
-
-    // status = importFile("data_files/fruit.txt", &fruit);
-    // std::cout << "Fruit List Imported:\t" << status << std::endl;
-
-    // status = importFile("data_files/fruit.txt", &fruit);
-    // std::cout << "Fruit List Imported:\t" << status << std::endl;
-
+    // importFile("data_files/grain.txt", &grain);
     
+    // importFile("data_files/protein.txt", &protein);
 
-    fruit.sortAsc();
-    std:: cout << fruit;
+    // fruit.sortAsc();
+    // std:: cout << fruit;
 
+    printMenu(0);
+
+
+
+    // exportFile("data_files/fruit.txt", &fruit);
+
+    // exportFile("data_files/vegetable.txt", &vegetable);
+
+    // exportFile("data_files/grain.txt", &grain);
+    
+    // exportFile("data_files/protein.txt", &protein);
 
     std::cout << "\nEND";
     return(0);
@@ -57,8 +60,8 @@ bool importFile(std::string fileName, foodList* importME){
     std::ifstream inputFile;
     inputFile.open(fileName);
 
-    if(!inputFile.is_open()){
-        //if file doesn't open, return false
+    if(!inputFile.is_open() || inputFile.eof()){
+        //if file doesn't open or is empty, return false
         return(false);
     }
 
@@ -117,12 +120,65 @@ bool exportFile(std::string fileName, foodList* exportME){
 }
 
 //Prints Main Menu based on the provided index where the default is the main menu
-void printMenu(int i = 0){
+void printMenu(int i){
+    int input;
     switch(i){
-        case (0):
+        case 0:
             std::cout << "\nWhat Would you Like to do?\n";
-            std::cout << "1.) \n";
-            std::cout << "2.) \n";
-            std::cout << "3.) \n";
+            std::cout << "0.) Main Menu\n";
+            std::cout << "1.) View Food Group Lists\n";
+            std::cout << "2.) Quit\n";
+
+            std::cout << "Enter the number associated with what you want to do:\t";
+            std::cin >> input;
+            printMenu(input);
+
+            break;
+        case 1:    // View Food Group Lists
+            std::cout << "\nWhich food group do you want to view?\n";
+            std::cout << "11.) Fruits\n";
+            std::cout << "12.) Vegetables\n";
+            std::cout << "13.) Grains\n";
+            std::cout << "14.) Protein\n";
+
+            std::cout << "Enter the number associated with what you want to do:\t";
+            std::cin >> input;
+            printMenu(input);
+
+            break;
+        case 2:     // Quit
+            break;
+
+        case 11:
+            std::cout << "Current Food Group:\tFruit" << std::endl;
+            std::cout << "Current Food: " << std::endl;
+            // Print food object (title, serving size, calories, price)
+
+            // Ask the user if they want to move to the next node or quit 
+
+        case 12:
+            std::cout << "Current Food Group:\tVegetable" << std::endl;
+            std::cout << "Current Food: " << std::endl;
+            // Print food object (title, serving size, calories, price)
+
+            // Ask the user if they want to move to the next node or quit 
+            
+        case 13:
+            std::cout << "Current Food Group:\tGrain" << std::endl;
+            std::cout << "Current Food: " << std::endl;
+            // Print food object (title, serving size, calories, price)
+
+            // Ask the user if they want to move to the next node or quit 
+            
+        case 14:
+            std::cout << "Current Food Group:\tProtein" << std::endl;
+            std::cout << "Current Food: " << std::endl;
+            // Print food object (title, serving size, calories, price)
+
+            // Ask the user if they want to move to the next node or quit 
+            
+
+
+
     }
 }

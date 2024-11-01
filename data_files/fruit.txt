@@ -1,3 +1,1 @@
-Apples,2,144,0.75
-Pear,1,73,0.85
-Fruit Salad,1,324,12.99
+Apples,2,23,0.23,Pear,1,32,0.75,Fruit Salad,1,234,12.99
