@@ -9,6 +9,7 @@
 
 #include "Food.h"
 #include "listNode.h"
+#include <iostream>
 
 class foodList{
     private:
@@ -23,7 +24,6 @@ class foodList{
     listNode<Food>* accessItem(int);
     void mergeSort(foodList*, int, int, bool);
     void merge(foodList*, int, int, int, bool);
-    void quickSort(foodList*, int, int);
 
     public:
     //constructor
@@ -98,50 +98,13 @@ listNode<Food> *foodList::accessItem(int index){
     listNode<Food>* temp = &head;
     int i = 0;
     //accessing item by iterating through the list until the index is reached
-    while(i < index && temp->getPnt() != nullptr){
+    while(i < index || temp->getPnt() != NULL){
         temp = temp->getPnt();
         i++;
     }
+
     return(temp);
 }
-
-
-void foodList::quickSort(foodList* list, int lower, int upper){
-    //partitioning
-    if(lower < upper){
-        //deciding pivot
-        double pivot = list->getFood(upper).getCalories();
-
-        //index of smaller elements
-        int sInd = lower - 1;
-    //temp varaible to help with swapping
-    listNode<Food> temp;
-        for(int i = lower; i <= upper - 1; i++){
-
-            if(list->getFood(i).getCalories() <= pivot){
-                sInd++;
-                //swapping variables
-                temp = *list->accessItem(sInd);
-                list->accessItem(sInd)->setObj(list->getFood(i));
-                list->accessItem(i)->setObj(temp.getObj());
-            }
-        }
-        //moving pivot
-        temp = *list->accessItem(sInd + 1);
-        list->accessItem(sInd + 1)->setObj(list->getFood(upper));
-        list->accessItem(upper)->setObj(temp.getObj());
-
-        int a = sInd + 1;
-
-
-        //recursively call function
-        quickSort(list, lower, a - 1);
-        quickSort(list, a + 1, upper);
-
-    }
-}
-
-
 
 //To make recursion easier within context, definfining a seperate mergesort function
 void foodList::mergeSort(foodList* list, int lower, int upper, bool asc = 0){
@@ -164,35 +127,64 @@ void foodList::merge(foodList* list, int lower, int mid, int upper, bool asc){
     int mergeSize = upper - lower + 1;
     int lowPos(lower), mergePos(0), upPos(mid + 1);
 
+    //creating a new list the size of the input
     foodList* mergedList = new foodList;
     for(int i = 0; i < mergeSize - 1; i++){
         mergedList->newFood();
     }
+    //sorting ascending or descending
+    if(asc == 0){
+        while(lowPos <= mid && upPos <= upper){
+            if(list->getFood(lowPos).getCalories() < list->getFood(upPos).getCalories()){
+                mergedList->setFood(mergePos, list->getFood(lowPos));
+                lowPos++;
+            }else{
+                mergedList->setFood(mergePos, list->getFood(upPos));
+                upPos++;
+            }
+            mergePos++;
+        }
 
-    while(lowPos <= mid && upPos <= upper){
-        if(list->getFood(lowPos).getCalories() < list->getFood(upPos).getCalories()){
+        while(lowPos <= mid){
             mergedList->setFood(mergePos, list->getFood(lowPos));
             lowPos++;
-        }else{
+            mergePos++;
+        }
+
+        while(upPos <= upper){
             mergedList->setFood(mergePos, list->getFood(upPos));
             upPos++;
+            mergePos++;
         }
-        mergePos++;
-    }
+        for(int j = 0; j < mergeSize; j++){
+            list->accessItem(j)->setObj(mergedList->getFood(j));
+        }
+    }else{
+        while(lowPos <= mid && upPos <= upper){
+            if(list->getFood(lowPos).getCalories() > list->getFood(upPos).getCalories()){
+                mergedList->setFood(mergePos, list->getFood(lowPos));
+                lowPos++;
+            }else{
+                mergedList->setFood(mergePos, list->getFood(upPos));
+                upPos++;
+            }
+            mergePos++;
+        }
 
-    while(lowPos <= mid){
-        mergedList->setFood(mergePos, list->getFood(lowPos));
-        lowPos++;
-        mergePos++;
-    }
+        while(lowPos <= mid){
+            mergedList->setFood(mergePos, list->getFood(lowPos));
+            lowPos++;
+            mergePos++;
+        }
 
-    while(upPos <= upper){
-        mergedList->setFood(mergePos, list->getFood(upPos));
-        upPos++;
-        mergePos++;
-    }
-    for(int j = 0; j < mergeSize; j++){
-        list->accessItem(j)->setObj(mergedList->getFood(j));
+        while(upPos <= upper){
+            mergedList->setFood(mergePos, list->getFood(upPos));
+            upPos++;
+            mergePos++;
+        }
+        for(int j = 0; j < mergeSize; j++){
+            list->accessItem(j)->setObj(mergedList->getFood(j));
+        }
     }
 
 }
@@ -251,11 +243,11 @@ void foodList::sortAsc(){
     int size;
 
     //start by finding the size of the list
-    for(int i = 0; index != NULL; i++){
-        index = index->getPnt();
+    for(int i = 0; index->getPnt() != NULL; i++){
         size = i;
+        index = index->getPnt();
     }
-    quickSort(this, 0, size);
+    mergeSort(this, 0, size, 0);
 }
 
 
