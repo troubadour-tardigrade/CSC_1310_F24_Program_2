@@ -9,7 +9,6 @@
 
 #include "Food.h"
 #include "listNode.h"
-#include <iostream>
 
 class foodList{
     private:
@@ -100,11 +99,9 @@ listNode<Food> *foodList::accessItem(int index){
     int i = 0;
     //accessing item by iterating through the list until the index is reached
     while(i < index && temp->getPnt() != nullptr){
-        std::cout << "\nitem: " << i;
         temp = temp->getPnt();
         i++;
     }
-    std::cout << "\n" << temp;
     return(temp);
 }
 
@@ -112,7 +109,6 @@ listNode<Food> *foodList::accessItem(int index){
 void foodList::quickSort(foodList* list, int lower, int upper){
     //partitioning
     if(lower < upper){
-        std::cout << "\n" << lower << " : " << upper;
         //deciding pivot
         double pivot = list->getFood(upper).getCalories();
 
@@ -123,11 +119,9 @@ void foodList::quickSort(foodList* list, int lower, int upper){
         for(int i = lower; i <= upper - 1; i++){
 
             if(list->getFood(i).getCalories() <= pivot){
-                std:: cout << "\n" << sInd << "\n" << *list;
                 sInd++;
                 //swapping variables
                 temp = *list->accessItem(sInd);
-                std::cout << "\n" << list->accessItem(sInd); 
                 list->accessItem(sInd)->setObj(list->getFood(i));
                 list->accessItem(i)->setObj(temp.getObj());
             }
@@ -197,7 +191,6 @@ void foodList::merge(foodList* list, int lower, int mid, int upper, bool asc){
         upPos++;
         mergePos++;
     }
-    std::cout << *mergedList;
     for(int j = 0; j < mergeSize; j++){
         list->accessItem(j)->setObj(mergedList->getFood(j));
     }
