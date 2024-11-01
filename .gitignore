@@ -3,3 +3,6 @@
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 *.exe
+TEST_SORT.cpp
+TIS_CASE.txt
+
